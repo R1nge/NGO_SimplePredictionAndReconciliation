@@ -10,6 +10,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Awake()
     {
+        if(!IsOwner) return;
         _lastServerPosition.OnValueChanged += Validate;
     }
 
@@ -23,19 +24,24 @@ public class PlayerMovement : NetworkBehaviour
 
     private void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
             _moveDirection = Vector3.left;
             SetLastServerPositionServerRpc(transform.position);
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             _moveDirection = Vector3.right;
             SetLastServerPositionServerRpc(transform.position);
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKey(KeyCode.Space))
         {
             _moveDirection = Vector3.up;
+            SetLastServerPositionServerRpc(transform.position);
+        }
+        else
+        {
+            _moveDirection = Vector3.zero;
             SetLastServerPositionServerRpc(transform.position);
         }
     }
